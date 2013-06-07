@@ -19,14 +19,14 @@ s = TCPSocket.open(server, port)
 s.puts "USER FXBOT 0 * FXBOT"
 s.puts "NICK #{nick}"
 s.puts "JOIN #{channel}"
-s.puts "PRIVMSG #{channel} :Which two currencies live info you want to know?"
+s.puts "PRIVMSG #{channel} :I know all currencies and metal prices real time! Ask me"
 
 until s.eof? do
   msg = s.gets
   puts msg
 
   wasGreeted = false
-  greetings.each do |g|
+  instruments.each do |g|
   	wasGreeted = true if msg.include? g
   end
 
