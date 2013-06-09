@@ -1,4 +1,6 @@
-require "socket"
+require 'socket'
+require 'Nokogiri'
+require 'open-uri'
 
 server = "chat.freenode.net"
 port = "6667"
@@ -6,7 +8,7 @@ nick = "FXBOT"
 channel = "#bitmaker"
 greeting_prefix = "PRIVMSG #bitmaker :" #response to this only server
 
-#for instruments
+#for instruments combinations
 file = File.open("/users/SW/BitMaker Assignments/W1D5/instruments.txt", "r")
 instruments = file.read.split
 
@@ -19,19 +21,28 @@ s = TCPSocket.open(server, port)
 s.puts "USER FXBOT 0 * FXBOT"
 s.puts "NICK #{nick}"
 s.puts "JOIN #{channel}"
-s.puts "PRIVMSG #{channel} :I know all currencies and metal prices real time! Ask me"
+s.puts "PRIVMSG #{channel} :I know all currencies and metal prices in real time! Ask me"
 
 until s.eof? do
   msg = s.gets
   puts msg
 
-  wasGreeted = false
-  instruments.each do |g|
-  	wasGreeted = true if msg.include? g
+  wasAsking = false
+  instruments.each do |i|
+  wasAsking = true if msg.include? i
   end
 
-  if msg.include? greeting_prefix and wasGreeted
-  	response = "yoyoyoyoyo!"
+  if msg.include? greeting_prefix and wasAsking
+  	msg_convert = msg.sub(/\//, '_')
+  	instrument = Nokogiri::HTML(open("http://api-sandbox.oanda.com/v1/instruments/#{msg_convert}/price")).at_css("//p").text.strip
+		n = instrument.length
+		first_number = n[n-22..n-16]
+		last_number  = n[n-8..n-2]
+
+  	# rate: grab the information from the url
+  	# buy:______ sell:______
+
+  	response = "The live rate for #{msg}:n\ Buy:#{first_number}, Sell:#{last_number}. Wanna buy or sell?"
   	s.puts "PRIVMSG #{channel} : #{response}"
   end
 end

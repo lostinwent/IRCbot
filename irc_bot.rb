@@ -2,13 +2,11 @@ require "socket"
 
 server = "chat.freenode.net"
 port = "6667"
-nick = "FXBOT"
+nick = "YOYOBOT"
 channel = "#bitmaker"
 greeting_prefix = "PRIVMSG #bitmaker :" #response to this only server
+greetings = ["hello", "hi", "yo", "wazup"]
 
-#for instruments
-file = File.open("/users/SW/BitMaker Assignments/W1D5/instruments.txt", "r")
-instruments = file.read.split
 
 # opens new socketwith the correct port and server
 s = TCPSocket.open(server, port)
@@ -16,10 +14,10 @@ s = TCPSocket.open(server, port)
 # print("addr: ", s.addr.join(":"), "\n")
 # print("peer: ", s.peeraddr.join(":"), "\n")
 
-s.puts "USER FXBOT 0 * FXBOT"
+s.puts "USER YOYOBOT 0 * YOYOBOT"
 s.puts "NICK #{nick}"
 s.puts "JOIN #{channel}"
-s.puts "PRIVMSG #{channel} :Which two currencies live info you want to know?"
+s.puts "PRIVMSG #{channel} :yOyOyOyO"
 
 until s.eof? do
   msg = s.gets
@@ -27,12 +25,12 @@ until s.eof? do
 
   wasGreeted = false
   greetings.each do |g|
-  	wasGreeted = true if msg.include? g
+    wasGreeted = true if msg.include? g
   end
 
   if msg.include? greeting_prefix and wasGreeted
-  	response = "yoyoyoyoyo!"
-  	s.puts "PRIVMSG #{channel} : #{response}"
+    response = "yoyoyoyoyo!"
+    s.puts "PRIVMSG #{channel} : #{response}"
   end
 end
 
