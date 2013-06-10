@@ -38,13 +38,13 @@ until s.eof? do
   	msg_convert = currencies_c.sub(/\//, '_')
   	instrument = Nokogiri::HTML(open("http://api-sandbox.oanda.com/v1/instruments/#{msg_convert}/price")).at_css("//p").text.strip
 		n = instrument.length
-		first_number = n[n-22..n-16]
-		last_number  = n[n-8..n-2]
+		first_number = instrument[n-22..n-16]
+		last_number  = instrument[n-8..n-2]
 
   	# rate: grab the information from the url
   	# buy:______ sell:______
 
-  	response = "The live rate for #{msg}:n\ Buy:#{first_number}, Sell:#{last_number}. Wanna buy or sell?"
+  	response = "The live rate for #{currencies_c}: Buy:#{first_number}, Sell:#{last_number}. Wanna buy or sell?"
   	s.puts "PRIVMSG #{channel} : #{response}"
   end
 end
