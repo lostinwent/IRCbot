@@ -33,7 +33,9 @@ until s.eof? do
   end
 
   if msg.include? greeting_prefix and wasAsking
-  	msg_convert = msg.sub(/\//, '_')
+  	currencies_u = msg.split(//).last(9).join.to_s
+  	currencies_c = currencies_u[0,7]
+  	msg_convert = currencies_c.sub(/\//, '_')
   	instrument = Nokogiri::HTML(open("http://api-sandbox.oanda.com/v1/instruments/#{msg_convert}/price")).at_css("//p").text.strip
 		n = instrument.length
 		first_number = n[n-22..n-16]
