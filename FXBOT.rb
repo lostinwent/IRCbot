@@ -16,7 +16,7 @@ s = TCPSocket.open(server, port)
 s.puts "USER FXBOT 0 * FXBOT"
 s.puts "NICK #{nick}"
 s.puts "JOIN #{channel}"
-s.puts "PRIVMSG #{channel} :I know all currencies and metal prices in real time! Ask me"
+s.puts "PRIVMSG #{channel} :I know all currencies and metal prices in real time! Ask me, start with a $tiker"
 
 until s.eof? do
   msg = s.gets
